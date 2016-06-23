@@ -17,7 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +57,6 @@ public class MovieFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         String[] data = {
-                "1", "2", "3"
         };
         final List<String> movieList = new ArrayList<String>(Arrays.asList(data));
 
@@ -67,9 +70,9 @@ public class MovieFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         setHasOptionsMenu(true);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_movie);
-        listView.setAdapter(mMovieAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        GridView gridView = (GridView) rootView.findViewById(R.id.listview_movie);
+        gridView.setAdapter(mMovieAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String movie = mMovieAdapter.getItem(position);
@@ -84,7 +87,7 @@ public class MovieFragment extends Fragment {
 
     private void updateMovies() {
         FetchMovieTask movieTask = new FetchMovieTask();
-        movieTask.execute();
+        movieTask.execute("lol");
 
     }
 
@@ -98,7 +101,7 @@ class FetchMovieTask extends AsyncTask<String, Void, String[]> {
 
     private final String LOG_TAG = FetchMovieTask.class.getSimpleName();
 
-    private String[] getMovieImageFromJson(String example, int numMovies)
+    public String[] getMovieImageFromJson(String example, int numMovies)
             throws JSONException {
         final String OWM_RESULT = "results";
         final String OWM_PATH = "poster_path";
@@ -106,7 +109,7 @@ class FetchMovieTask extends AsyncTask<String, Void, String[]> {
         JSONObject movieJson = new JSONObject(example);
         JSONArray movieArray = movieJson.getJSONArray(OWM_RESULT);
 
-        String[] resultSting = new String[numMovies];
+        String[] resultSting = new String[movieArray.length()];
 
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject movie = movieArray.getJSONObject(i);
@@ -129,7 +132,6 @@ class FetchMovieTask extends AsyncTask<String, Void, String[]> {
         String example = null;
 
         String apiKey = "22d957adb449240fa05ba07d3f187241";
-        String two = "";
         int numMovies = 10;
 
         try {

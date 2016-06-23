@@ -2,9 +2,10 @@ package ch.floriankaufmann.popularmovies;
 
 
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
+import android.widget.ImageView;
 
 
 public class MainActivity extends ActionBarActivity {
